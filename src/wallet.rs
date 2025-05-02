@@ -2,6 +2,9 @@
 use ring::signature::{EcdsaKeyPair, KeyPair, ECDSA_P256_SHA256_FIXED_SIGNING};
 use serde::{Deserialize, Serialize};
 
+use ring::rand::SystemRandom;
+
+
 const VERSION: u8 = 0x00;
 pub const ADDRESS_CHECK_SUM_LEN: usize = 4;
 
@@ -15,8 +18,11 @@ impl Wallet {
     
     pub fn new() -> Wallet {
         let pkcs8 = crate::new_key_pair();
+
+    let rng=SystemRandom::new();
         let key_pair =
-            EcdsaKeyPair::from_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, pkcs8.as_ref()).unwrap();
+            EcdsaKeyPair::from_pkcs8(&ECDSA_P256_SHA256_FIXED_SIGNING, pkcs8.as_ref(),&rng).unwrap();
+
         let public_key = key_pair.public_key().as_ref().to_vec();
         Wallet { pkcs8, public_key }
     }
@@ -81,7 +87,9 @@ pub fn convert_address(pub_hash_key: &[u8]) -> String {
 
 // wallets
 
-use crate::wallet;
+
+/* use crate::Wallet; */
+
 use std::collections::HashMap;
 use std::env::current_dir;
 use std::fs::{File, OpenOptions};

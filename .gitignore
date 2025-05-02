@@ -1,4 +1,7 @@
 
-/target 
-/data
+/target
 wallet.dat
+/data
+/src/req_functions.rs
+.gitignore
+Cargo.lock
