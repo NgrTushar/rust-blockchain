@@ -5,3 +5,4 @@ wallet.dat
 /src/req_functions.rs
 .gitignore
 Cargo.lock
+/src/struct.rs
